@@ -250,10 +250,15 @@ textarea {
     justify-content: space-between;
     padding-bottom: 10px;
     border-bottom: 1px solid #ddd;
+    font-size: 16px;
+}
+
+.modal__customer-header h3 {
+    font-size: 20px;
 }
 
 .modal__customer-container {
-    font-size: 15px;
+    font-size: 12px;
     padding-bottom: 10px;
     border-bottom: 1px solid #ddd;
 }
@@ -263,7 +268,7 @@ textarea {
 }
 
 .modal__customer-container div input, select {
-    font-size: 12px;
+    font-size: 10px;
 }
 
 .modal__customer-container--fullName {
@@ -285,7 +290,8 @@ textarea {
 .form-control {
     width: 100%;
     margin-top: 4px;
-    font-size: 12px;
+    padding: 5px;
+    font-size: 10px;
 }
 
 .modal__customer-action {
@@ -293,6 +299,7 @@ textarea {
     display: flex;
     justify-content: end;
     gap: 10px;
+    font-size: 12px;
 }
 
 .modal__customer-action--close {

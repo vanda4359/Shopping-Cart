@@ -19,6 +19,10 @@ document.addEventListener('DOMContentLoaded', function () {
         onSubmit: function (data) {
 
             console.log(data);
+            function setListCustomer(data) {
+                localStorage.setItem("DANHSACHKHACHHANG", JSON.stringify(data))
+            }
+            setListCustomer(data)
         }
     });
 
