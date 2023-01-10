@@ -15,9 +15,6 @@ document.addEventListener('DOMContentLoaded', function () {
             Validator.isRequired('#district'),
             Validator.isRequired('#ward'),
             Validator.isVillage('#village'),
-
-            // Validator.minLength('#password', 6),
-            // Validator.isRequired('#password_confirmation'),
         ],
         onSubmit: function (data) {
 
@@ -31,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
 function Validator(options) {
 
     function getParent(element, selector) {
-        while (element.parentElement) {
+        while (element?.parentElement) {
             if (element.parentElement.matches(selector)) {
                 return element.parentElement;
             }

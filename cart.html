@@ -94,6 +94,7 @@
                         <input name="email" type="email" class="form-control" placeholder="Email" id="email">
                         <span for="email" class="form-message"></span>
                     </div>
+                    
 
                     <div class="modal__customer-container--title">
                         <label for="phone">Số điện thoại:</label>
@@ -132,14 +133,18 @@
                     </div>
 
                     <div class="modal__customer-container--title">
-                        <label for="message">Lời nhắn:</label>
+                        <label for="message1">Lời nhắn:</label>
                     </div>
-                    <textarea rows="3" type="text" class="form-control" id="message"></textarea>
-
+                    <div class="form-group">
+                        
+                        <textarea rows="3" name="message" type="text" class="form-control" id="message"></textarea>
+                        
+                    </div>
+                    
                 </div>
                 <div class="modal__customer-action">
                     <button class="modal__customer-action--close" onclick="closeModal()">Hủy</button>
-                    <button type="submit" name="message" class="modal__customer-action--comfirm">Xác nhận</button>
+                    <button type="submit" class="modal__customer-action--comfirm">Xác nhận</button>
                 </div>
             </form>
         </div>
