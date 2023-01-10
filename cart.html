@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="./css/cartStyle.css">
+    <title>Giỏ hàng</title>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav id="nav-bar">
+        <ul class="menu-nav">
+            <li class="menu-item">
+                <a href="#" class="menu-item-title"><img src="./img/Apple.png" alt="Apple logo" /></a>
+            </li>
+            <li class="menu-item">
+                <a href="./index.html" class="menu-item-title">HOME</a>
+            </li>
+            <li class="menu-item">
+                <a href="#" class="menu-item-title">ABOUT</a>
+            </li>
+            <li class="menu-item">
+                <a href="#" class="menu-item-title">BILLS</a>
+            </li>
+            <li class="menu-item">
+                <a href="#" class="menu-item-title"><i class="fa-solid fa-cart-shopping"></i></a>
+            </li>
+        </ul>
+    </nav>
+    <!-- Hiển thị thông tin giỏ hàng -->
+    <section class="cart">
+        <div id="cart-title">
+            <div class="item-cart bold">
+                <div class="product-name bold">
+                    Product Name
+                </div>
+                <div class="quantity bold">
+                    Quantity
+                </div>
+                <div class="price bold">Subtotal</div>
+                <p class="totalMoney bold">Total</p>
+                <div class="action bold">
+                    Clear Cart
+                </div>
+            </div>
+        </div>
+        <div class="support-buy">
+            <div id="totalMoney-all">
+                
+            </div>
+            <div class="support-buy__btn">
+                <button class="support-buy__btn-back"><i class="fa-solid fa-arrow-left"></i> Back to Shopping</button>
+                <button class="support-buy__btn-buy" onclick="openModal()">Buy</button>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- Modal layout -->
+    <div id="modal">
+        <div class="modal__overlay"></div>
+        <div class="modal__body">
+            <form class="modal__customer" id="form-1">
+                <header class="modal__customer-header">
+                    <h3>Thông tin khách hàng</h3>
+                    <div class="modal__customer-header--close" onclick="closeModal()">
+                        <i class="fa-solid fa-xmark"></i>
+                    </div>
+                </header>
+                <div action="" class="modal__customer-container">
+                    <div class="modal__customer-container--title" >
+                        <label for="fullName">Họ và tên:</label>
+                    </div>
+                    <div class="modal__customer-container--fullName">
+                        <div class="form-group">
+                            <input name="surname" type="text" class="form-control" placeholder="Họ" id="surname">
+                            <span for="surname" class="form-message"></span>
+                        </div>
+                        <div class="form-group">
+                            <input name="name" type="text" class="form-control" placeholder="Tên" id="name">
+                            <span for="name" class="form-message"></span>
+                        </div>
+                    </div>
+
+                    <div class="modal__customer-container--title">
+                        <label type="email" for="email">Email:</label>
+                    </div>
+                    <div class="form-group">
+                        <input name="email" type="email" class="form-control" placeholder="Email" id="email">
+                        <span for="email" class="form-message"></span>
+                    </div>
+
+                    <div class="modal__customer-container--title">
+                        <label for="phone">Số điện thoại:</label>
+                    </div>
+                    <div class="form-group">
+                        <input name="phone" class="form-control" placeholder="Số điện thoại" id="phone">
+                        <span for="phone" class="form-message" ></span>
+                    </div>
+
+                    <div class="modal__customer-container--title">
+                        <label for="address">Địa chỉ:</label>
+                    </div>
+                    <div class="modal__customer-container--address">
+                        <div class="form-group">
+                            <select name="province" class="form-control" id="province" onchange="onChangeProvince()">
+                                <option value="">--Chọn Tỉnh/ Thành phố--</option>
+                            </select>
+                            <span for="province" class="form-message"></span>
+                        </div>
+                        <div class="form-group">
+                            <select name="district" class="form-control" id="district" onchange="onChangeDistrict()">
+                                <option value="">--Chọn Quận/ Huyện--</option>
+                            </select>
+                            <span for="district" class="form-message"></span>
+                        </div>
+                        <div class="form-group">
+                            <select name="ward" class="form-control" id="ward">
+                                <option value="">--Chọn Xã/ Phường--</option>
+                            </select>
+                            <span for="ward" class="form-message"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input name="village" type="text" class="form-control" placeholder="Thôn/Số nhà" id="village">
+                        <span for="village" class="form-message"></span>
+                    </div>
+
+                    <div class="modal__customer-container--title">
+                        <label for="message">Lời nhắn:</label>
+                    </div>
+                    <textarea rows="3" type="text" class="form-control" id="message"></textarea>
+
+                </div>
+                <div class="modal__customer-action">
+                    <button class="modal__customer-action--close" onclick="closeModal()">Hủy</button>
+                    <button type="submit" name="message" class="modal__customer-action--comfirm">Xác nhận</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="./cart.js"></script>
+    <script src="./validate.js"></script>
+
+</body>
+
+</html>
