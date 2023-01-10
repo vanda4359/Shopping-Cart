@@ -105,6 +105,7 @@ function handleDecrease(event, id) {
             if (productCartNow.id === id) {
                 let currentTotalMoney = currentQuantity * listProductCart[i].price;
                 elementTotalMoney.innerText = currentTotalMoney;
+                console.log(11111);
             }
         }
 
