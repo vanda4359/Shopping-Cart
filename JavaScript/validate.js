@@ -19,10 +19,22 @@ document.addEventListener('DOMContentLoaded', function () {
         onSubmit: function (data) {
 
             console.log(data);
-            function setListCustomer(data) {
-                localStorage.setItem("DANHSACHKHACHHANG", JSON.stringify(data))
+
+            let province = document.querySelector(`#province option[value='${data.province}']`).innerText
+            let district = document.querySelector(`#district option[value='${data.district}']`).innerText
+            let ward = document.querySelector(`#ward option[value='${data.ward}']`).innerText
+            let payload = {
+                "fullname": `${data.surname} ${data.name}`,
+                "address": `${data.village}, ${ward}, ${district}, ${province}`,
+                "id": generateID(),
+                "datetime": format(new Date())
             }
-            setListCustomer(data)
+
+            console.log(payload)
+            // function setListCustomer(data) {
+            //     localStorage.setItem("DANHSACHKHACHHANG", JSON.stringify(data))
+            // }
+            // setListCustomer(data)
         }
     });
 
@@ -40,20 +52,20 @@ function Validator(options) {
         }
 
     }
-    var selectorRules = {};
+    let selectorRules = {};
 
     // Hàm thực hiện validate
     function validate(inputElement, rule) {
-        var errorElement = getParent(inputElement, options.formGroupSelector).querySelector(options.errorSelector);
+        let errorElement = getParent(inputElement, options.formGroupSelector).querySelector(options.errorSelector);
 
-        var errorMessage;
+        let errorMessage;
 
         // Lấy ra các rules của selector
-        var rules = selectorRules[rule.selector];
+        let rules = selectorRules[rule.selector];
 
         // Lặp qua từng rule & kiểm tra
         // Nếu có lỗi thì dừng việc kiểm
-        for (var i = 0; i < rules.length; ++i) {
+        for (let i = 0; i < rules.length; ++i) {
             errorMessage = rules[i](inputElement.value);
             if (errorMessage) break;
         }
@@ -69,7 +81,7 @@ function Validator(options) {
         return !errorMessage;
     }
 
-    var formElement = document.querySelector(options.form);
+    let formElement = document.querySelector(options.form);
 
     if (formElement) {
 
@@ -77,12 +89,12 @@ function Validator(options) {
         formElement.onsubmit = function (e) {
             e.preventDefault();
 
-            var isFormValid = true;
+            let isFormValid = true;
 
             // Lặp qua từng rules và validate
             options.rules.forEach(function (rule) {
-                var inputElement = formElement.querySelector(rule.selector);
-                var isValid = validate(inputElement, rule);
+                let inputElement = formElement.querySelector(rule.selector);
+                let isValid = validate(inputElement, rule);
                 if (!isValid) {
                     isFormValid = false;
                 }
@@ -92,10 +104,10 @@ function Validator(options) {
             if (isFormValid) {
                 // Trường hợp submit với javascript
                 if (typeof options.onSubmit === 'function') {
-                    var enableInputs = formElement.querySelectorAll('[name]');
+                    let enableInputs = formElement.querySelectorAll('[name]');
 
 
-                    var formValues = Array.from(enableInputs).reduce(function (values, input) {
+                    let formValues = Array.from(enableInputs).reduce(function (values, input) {
                         values[input.name] = input.value;
 
                         return values;
@@ -120,7 +132,7 @@ function Validator(options) {
                 selectorRules[rule.selector] = [rule.test]
             }
 
-            var inputElement = formElement.querySelector(rule.selector);
+            let inputElement = formElement.querySelector(rule.selector);
 
             if (inputElement) {
                 // Xử lý TH Blur ra khỏi Input
@@ -130,7 +142,7 @@ function Validator(options) {
 
                 // Xử lý mỗi khi người dùng nhập vào Input
                 inputElement.oninput = function () {
-                    var errorElement = getParent(inputElement, options.formGroupSelector).querySelector(options.errorSelector);
+                    let errorElement = getParent(inputElement, options.formGroupSelector).querySelector(options.errorSelector);
 
                     errorElement.innerText = "";
                     getParent(inputElement, options.formGroupSelector).classList.remove('invalid');
@@ -145,8 +157,6 @@ function Validator(options) {
     }
 
 }
-
-
 
 // Định nghĩa rules
 // Nguyên tắc của các rules:
@@ -165,7 +175,7 @@ Validator.isEmail = function (selector, message) {
     return {
         selector: selector,
         test: function (value) {
-            var regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+            let regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
             return regex.test(value) ? undefined : message || 'Trường này phải là email';
         }
     };
@@ -175,7 +185,7 @@ Validator.isPhone = function (selector, message) {
     return {
         selector: selector,
         test: function (value) {
-            var regex = /^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/;
+            let regex = /^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/;
             return regex.test(value) ? undefined : message || 'Vui lòng nhập đúng số điện thoại'
         }
     };

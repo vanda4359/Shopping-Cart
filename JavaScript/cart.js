@@ -1,33 +1,20 @@
+var keyLocalStorageListSP = "DANHSACHSP";
+
 var keyLocalStorageItemCart = "DANHSACHITEMCART"
-
-// Lấy ra toàn bộ Item giỏ hàng
-function getListItemCart() {
-    var listItemCart = new Array();
-
-    var jsonListItemCart = localStorage.getItem(keyLocalStorageItemCart);
-
-    if (jsonListItemCart != null) {
-        var listItemCart = JSON.parse(jsonListItemCart);
-    }
-    return listItemCart;
-}
+initUI();
 
 // Lưu trữ danh sách Item giỏ hàng
 function setListItemCart(listItemCart) {
-    var jsonListItemCart = JSON.stringify(listItemCart);
+    let jsonListItemCart = JSON.stringify(listItemCart);
 
     localStorage.setItem(keyLocalStorageItemCart, jsonListItemCart)
 }
 
-var listItemCart = getListItemCart();
-
-// Lấy ra toàn bộ sản phẩm 
-
-var listProduct = JSON.parse(localStorage.getItem("DANHSACHSP"));
-
 // Tạo ra list sản phẩm giỏ hàng
-function createListProductCart(listProductCart) {
-    var listProductCart = listItemCart.map(item => {
+function getListProductCart() {
+    let listItemCart = getDataStorage(keyLocalStorageItemCart);
+    let listProduct = getDataStorage(keyLocalStorageListSP);
+    let listProductCart = listItemCart.map(item => {
         const findItem = listProduct.find(e => e.id === item.idSP);
 
         return {
@@ -39,58 +26,55 @@ function createListProductCart(listProductCart) {
     return listProductCart;
 }
 
-var listProductCart = createListProductCart();
 
-var newHTMLCart = listProductCart.map(function (product) {
-    let totalProduct = product.price * product.soLuong;
-
-    return `<div class="item-cart">
-                <div class="product-name">
-                    <div class="image">
-                        <img src="${product.image}" >
-                    </div>
-                    <div class="name-title">
-                        <p class="name bold">${product.name}</p>
-                        <div class="quantity-now">Quantity: ${product.quantity}</div>
-                    </div>
+function initUI(){
+    let listProductCart = getListProductCart();
+    let newHTMLCart = listProductCart.map(function (product) {
+        let totalProduct = product.price * product.soLuong;
+        return `<div class="item-cart">
+            <div class="product-name">
+                <div class="image">
+                    <img src="${product.image}" >
                 </div>
-                <div class="quantity">
-                    <div class="decrease-quantity" onclick="handleDecrease(event, ${product.id})"><i class="fa-solid fa-minus"></i></div>
-                    <div class="quantity-add">${product.soLuong}</div>
-                    <div class="increase-quantity" onclick="handleIncrease(event, ${product.id})"><i class="fa-solid fa-plus"></i></div>
+                <div class="name-title">
+                    <p class="name bold">${product.name}</p>
+                    <div class="quantity-now">Quantity: ${product.quantity}</div>
                 </div>
-                <div class="price"> ${product.price} đ</div>
-                <p class="totalMoney"> ${totalProduct} đ</p>
-                <div class="action" onclick="closeItemCart(event, ${product.id})">
-                    <i class="fa-regular fa-circle-xmark"></i>
-                </div>
-            </div>`;
+            </div>
+            <div class="quantity">
+                <div class="decrease-quantity" onclick="handleDecrease(event, ${product.id})"><i class="fa-solid fa-minus"></i></div>
+                <div class="quantity-add">${product.soLuong}</div>
+                <div class="increase-quantity" onclick="handleIncrease(event, ${product.id})"><i class="fa-solid fa-plus"></i></div>
+            </div>
+            <div class="price"> ${product.price} đ</div>
+            <p class="totalMoney"> ${totalProduct} đ</p>
+            <div class="action" onclick="closeItemCart(event, ${product.id})">
+                <i class="fa-regular fa-circle-xmark"></i>
+            </div>
+        </div>`;
+    })
+    newHTMLCart = newHTMLCart.join("")
+    document.getElementById("cart-title").innerHTML = document.getElementById("cart-title").innerHTML + newHTMLCart;
+    total();
+}
 
-})
-var newHTMLCart = newHTMLCart.join("")
-document.getElementById("cart-title").innerHTML = document.getElementById("cart-title").innerHTML + newHTMLCart;
-
-
+// Tổng tiền 
 function total() {
     let totalListProduct = 0;
+    let listProductCart = getListProductCart();
     listProductCart.forEach(product => {
         totalListProduct += product.price * product.soLuong;
     })
     document.getElementById("totalMoney-all").innerHTML = `<div class="bold">Total: ${totalListProduct} đ</div>`;
 }
-total(listProductCart);
 
 // giảm số lượng đặt hàng của từng sản phẩm
 function handleDecrease(event, id) {
-
     let elementQuantity = event.target.closest(".item-cart").querySelector(".quantity-add");
-    var listItemCart = getListItemCart();
-
+    let listItemCart = getDataStorage(keyLocalStorageItemCart);
+    
     let elementTotalMoney = event.target.closest(".item-cart").querySelector(".totalMoney");
-    var listProductCart = createListProductCart();
-
-    let elementTotalMoneyAll = event.target.closest(".cart").querySelector("#totalMoney-all");
-
+    let listProductCart = getListProductCart();
 
     for (let i = 0; i < listItemCart.length; i++) {
         const itemCartNow = listItemCart[i];
@@ -111,17 +95,17 @@ function handleDecrease(event, id) {
 
     }
 
-    // Lưu trữ vào localStorage
     setListItemCart(listItemCart);
+    total()
 }
 
 // giảm số lượng đặt hàng của từng sản phẩm
 function handleIncrease(event, id) {
     let element = event.target.closest(".item-cart").querySelector(".quantity-add");
-    var listItemCart = getListItemCart();
+    let listItemCart = getDataStorage(keyLocalStorageItemCart);
 
     let elementTotalMoney = event.target.closest(".item-cart").querySelector(".totalMoney");
-    var listProductCart = createListProductCart();
+    let listProductCart = getListProductCart();
 
     for (let i = 0; i < listItemCart.length; i++) {
         const itemCartNow = listItemCart[i];
@@ -140,39 +124,23 @@ function handleIncrease(event, id) {
         }
     }
 
-    // Lưu trữ vào localStorage
     setListItemCart(listItemCart);
+    total()
 }
 
 // Xóa sản phẩm của giỏ hàng
 function closeItemCart(event, id) {
     alert('Bạn có chắc chắn muốn xóa:' + id);
-    console.log("event", event.target.closest(".cart").querySelector("#totalMoney-all"));
 
-    var listItemCart = getListItemCart();
+    let listItemCart = getDataStorage(keyLocalStorageItemCart);
     const listItemCartNow = listItemCart.filter(item => item.idSP !== id);
 
     setListItemCart(listItemCartNow);
 
     let element = event.target.closest(".item-cart");
     element.remove();
-
-    // render ra tổng tiền
-    // let elementTotalMoneyAll = event.target.closest(".cart").querySelector("#totalMoney-all");
-    // var listProductCart = createListProductCart();
-    // let totalListProduct = 0;
-    // listProductCart.forEach(product => {
-    //     totalListProduct += product.price * product.soLuong;
-    // })
-    
-    // elementTotalMoneyAll.innerText = totalListProduct;
-    var listProductCart = createListProductCart(listProductCart)
-
-    total(listProductCart)
+    total()
 }
-
-
-// Lấy thông tin khách hàng 
 
 // Lấy thông tin tỉnh, huyện xã để đổ ra giao diện
 function openModal() {

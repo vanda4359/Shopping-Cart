@@ -20,13 +20,13 @@ img {
     width: 100%;
 }
 
+p {
+    margin-bottom: 0;
+}
+
 button {
     padding: 6px 10px;
     border-radius: 4px;
-}
-
-p {
-    margin-bottom: 0;
 }
 
 button:hover {
