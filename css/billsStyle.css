@@ -94,9 +94,6 @@ button:hover {
     font-size: 14px; 
 }
 
-#bills-title {
-}
-
 /* Item bills */
 
 .item-bills {
@@ -107,27 +104,19 @@ button:hover {
     align-items: center;
 }
 
-.bills-code, 
-.bills-customer-name, 
-.bills-date, 
-.bills-No, 
-.bills-quantity, 
-.bills-price, 
-.bills-action {
-    flex: 1;
-}
-
 .bills-code-detail {
     font-size: 12px;
     color: blue;
 }
 
+.bills-code-detail:hover {
+    color: rgb(67, 67, 199);
+    cursor: pointer;
+}
+
 .bills-action i {
     color: #ed300e;
 }
-
-
-
 
 .support-buy {
     margin-top: 10px;

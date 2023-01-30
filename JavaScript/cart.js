@@ -1,34 +1,42 @@
-var keyLocalStorageListSP = "DANHSACHSP";
+let keyLocalStorageListSP = "DANHSACHSP";
 
-var keyLocalStorageItemCart = "DANHSACHITEMCART"
-initUI();
+let keyLocalStorageItemCart = "DANHSACHITEMCART"
 
-// Lưu trữ danh sách Item giỏ hàng
-function setListItemCart(listItemCart) {
-    let jsonListItemCart = JSON.stringify(listItemCart);
+let listItemCart = getDataStorage(keyLocalStorageItemCart);
+let listProduct = getDataStorage(keyLocalStorageListSP);
 
-    localStorage.setItem(keyLocalStorageItemCart, jsonListItemCart)
+testCart()
+
+
+// kiểm tra giỏ hàng
+function testCart() {
+
+    if (listItemCart.length > 0) {
+        document.getElementById('cart').style.display = "block";
+        document.getElementById('cart-empty').style.display = "none";
+    } else {
+        document.getElementById('cart').style.display = "none";
+        document.getElementById('cart-empty').style.display = "block";
+    }
 }
 
 // Tạo ra list sản phẩm giỏ hàng
 function getListProductCart() {
-    let listItemCart = getDataStorage(keyLocalStorageItemCart);
-    let listProduct = getDataStorage(keyLocalStorageListSP);
-    let listProductCart = listItemCart.map(item => {
-        const findItem = listProduct.find(e => e.id === item.idSP);
 
+    let listProductCart = listItemCart?.map(item => {
+        const findItem = listProduct.find(e => e.id?.toString() === item.idSP?.toString());
         return {
             ...findItem,
             soLuong: item.quantityAdd,
         }
     })
-
     return listProductCart;
 }
 
+let listProductCart = getListProductCart();
+initUI();
+function initUI() {
 
-function initUI(){
-    let listProductCart = getListProductCart();
     let newHTMLCart = listProductCart.map(function (product) {
         let totalProduct = product.price * product.soLuong;
         return `<div class="item-cart">
@@ -37,17 +45,17 @@ function initUI(){
                     <img src="${product.image}" >
                 </div>
                 <div class="name-title">
-                    <p class="name bold">${product.name}</p>
+                    <p class="name bold" >${product.name}</p>
                     <div class="quantity-now">Quantity: ${product.quantity}</div>
                 </div>
             </div>
             <div class="quantity">
-                <div class="decrease-quantity" onclick="handleDecrease(event, ${product.id})"><i class="fa-solid fa-minus"></i></div>
+                <button class="decrease-quantity" onclick="handleDecrease(event, ${product.id})" ><i class="fa-solid fa-minus"></i></button>
                 <div class="quantity-add">${product.soLuong}</div>
-                <div class="increase-quantity" onclick="handleIncrease(event, ${product.id})"><i class="fa-solid fa-plus"></i></div>
+                <button class="increase-quantity" onclick="handleIncrease(event, ${product.id})"><i class="fa-solid fa-plus"></i></button>   
             </div>
-            <div class="price"> ${product.price} đ</div>
-            <p class="totalMoney"> ${totalProduct} đ</p>
+            <div class="price"> ${product.price.toLocaleString('en-US')} đ</div>
+            <p class="totalPrice"> ${totalProduct.toLocaleString('en-US')} đ</p>
             <div class="action" onclick="closeItemCart(event, ${product.id})">
                 <i class="fa-regular fa-circle-xmark"></i>
             </div>
@@ -60,87 +68,170 @@ function initUI(){
 
 // Tổng tiền 
 function total() {
-    let totalListProduct = 0;
-    let listProductCart = getListProductCart();
+    let totalPriceAll = 0;
+
     listProductCart.forEach(product => {
-        totalListProduct += product.price * product.soLuong;
+        totalPriceAll += product.price * product.soLuong;
     })
-    document.getElementById("totalMoney-all").innerHTML = `<div class="bold">Total: ${totalListProduct} đ</div>`;
+    document.getElementById("totalPrice-all").innerHTML = `<div class="bold">Total: ${totalPriceAll} đ</div>`;
 }
 
 // giảm số lượng đặt hàng của từng sản phẩm
 function handleDecrease(event, id) {
-    let elementQuantity = event.target.closest(".item-cart").querySelector(".quantity-add");
-    let listItemCart = getDataStorage(keyLocalStorageItemCart);
-    
-    let elementTotalMoney = event.target.closest(".item-cart").querySelector(".totalMoney");
-    let listProductCart = getListProductCart();
+    let quantityCartNew = 0;
+    let totalPriceNew = 0;
+    let quantityNew = 0;
 
-    for (let i = 0; i < listItemCart.length; i++) {
-        const itemCartNow = listItemCart[i];
-        const productCartNow = listProductCart[i];
-    
-        // nếu tồn tại thì giảm số lượng 
-        if (itemCartNow.idSP === id) {
-            let currentQuantity = listItemCart[i].quantityAdd - 1;
-            listItemCart[i].quantityAdd = currentQuantity;
-            elementQuantity.innerText = currentQuantity;
+    let elementQuantityAdd = event.target.closest(".item-cart").querySelector(".quantity-add");
 
-            if (productCartNow.id === id) {
-                let currentTotalMoney = currentQuantity * listProductCart[i].price;
-                elementTotalMoney.innerText = currentTotalMoney;
-                console.log(11111);
+    let elementTotalPrice = event.target.closest(".item-cart").querySelector(".totalPrice");
+
+    let elementQuantityNow = event.target.closest(".item-cart").querySelector(".quantity-now");
+
+    for (let i = 0; i < listProductCart.length; i++) {
+
+        if (listProductCart[i].id.toString() === id.toString()) {
+            quantityCartNew = listProductCart[i].soLuong - 1;
+            totalPriceNew = quantityCartNew * listProductCart[i].price;
+            quantityNew = listProductCart[i].quantity + 1;
+
+            listProductCart[i].soLuong -= 1;
+            listProductCart[i].quantity += 1;
+
+            if (quantityNew === 1) {
+                event.target.closest(".item-cart").querySelector(".increase-quantity").disabled = false;
+
             }
-        }
 
+            if (quantityCartNew === 1 ) {
+                event.target.closest(".item-cart").querySelector(".decrease-quantity").disabled = true  ;
+            }
+
+            if (quantityCartNew > 0) {
+                console.log(11111, id);
+                elementQuantityAdd.innerText = quantityCartNew;
+                elementTotalPrice.innerText = totalPriceNew.toLocaleString('en-US') + ` đ`;
+                elementQuantityNow.innerText = `Quantity:` + quantityNew;
+
+                const listItemCartCurrent = listItemCart.map((item) => {
+                    return {
+                        ...item,
+                        quantityAdd: item.idSP.toString() === id.toString() ? item.quantityAdd -= 1 : item.quantityAdd
+                    }
+                });
+                const listProductCurrent = listProduct.map((item) => {
+                    return {
+                        ...item,
+                        quantity: item.id.toString() === id.toString() ? item.quantity += 1 : item.quantity
+                    }
+                });
+
+                setDataStorage(keyLocalStorageItemCart, listItemCartCurrent);
+                setDataStorage(keyLocalStorageListSP, listProductCurrent);
+
+                getListProductCart()
+                total()
+            }
+            break;
+        }
     }
 
-    setListItemCart(listItemCart);
-    total()
 }
 
-// giảm số lượng đặt hàng của từng sản phẩm
+// Tăng số lượng đặt hàng của từng sản phẩm
 function handleIncrease(event, id) {
-    let element = event.target.closest(".item-cart").querySelector(".quantity-add");
-    let listItemCart = getDataStorage(keyLocalStorageItemCart);
+    let quantityCartNew = 0;
+    let totalPriceNew = 0;
+    let quantityNew = 0;
 
-    let elementTotalMoney = event.target.closest(".item-cart").querySelector(".totalMoney");
-    let listProductCart = getListProductCart();
+    let elementQuantityAdd = event.target.closest(".item-cart").querySelector(".quantity-add");
 
-    for (let i = 0; i < listItemCart.length; i++) {
-        const itemCartNow = listItemCart[i];
-        const productCartNow = listProductCart[i];
+    let elementTotalPrice = event.target.closest(".item-cart").querySelector(".totalPrice");
 
-        // nếu tồn tại thì tăng số lượng 
-        if (itemCartNow.idSP === id) {
-            let currentQuantity = listItemCart[i].quantityAdd + 1;
-            listItemCart[i].quantityAdd = currentQuantity;
-            element.innerText = currentQuantity;
+    let elementQuantityNow = event.target.closest(".item-cart").querySelector(".quantity-now");
 
-            if (productCartNow.id === id) {
-                let currentTotalMoney = currentQuantity * listProductCart[i].price;
-                elementTotalMoney.innerText = currentTotalMoney;
+    for (let i = 0; i < listProductCart.length; i++) {
+        if (listProductCart[i].id.toString() === id.toString()) {
+            quantityCartNew = listProductCart[i].soLuong + 1;
+            totalPriceNew = quantityCartNew * listProductCart[i].price;
+            quantityNew = listProductCart[i].quantity - 1;
+
+            listProductCart[i].soLuong += 1;
+            listProductCart[i].quantity -= 1;
+
+            if (quantityNew === 0) {
+                event.target.closest(".item-cart").querySelector(".increase-quantity").disabled = true;
+
             }
+            
+            if (quantityCartNew === 2 ) {
+                event.target.closest(".item-cart").querySelector(".decrease-quantity").disabled = false  ;
+            }
+
+            if (quantityNew >= 0) {
+                // event.target.closest(".item-cart").querySelector(".increase-quantity").disabled = true;
+                elementQuantityAdd.innerText = quantityCartNew;
+                elementTotalPrice.innerText = totalPriceNew.toLocaleString('en-US') + ` đ`;
+                elementQuantityNow.innerText = `Quantity:` + quantityNew;
+
+                const listItemCartCurrent = listItemCart.map((item) => {
+                    return {
+                        ...item,
+                        quantityAdd: item.idSP.toString() === id.toString() ? item.quantityAdd += 1 : item.quantityAdd
+                    }
+                });
+                const listProductCurrent = listProduct.map((item) => {
+                    return {
+                        ...item,
+                        quantity: item.id.toString() === id.toString() ? item.quantity -= 1 : item.quantity
+                    }
+                });
+
+                setDataStorage(keyLocalStorageItemCart, listItemCartCurrent);
+                setDataStorage(keyLocalStorageListSP, listProductCurrent);
+
+
+                getListProductCart()
+                total()
+            }
+            break;
         }
     }
 
-    setListItemCart(listItemCart);
-    total()
 }
 
 // Xóa sản phẩm của giỏ hàng
 function closeItemCart(event, id) {
     alert('Bạn có chắc chắn muốn xóa:' + id);
 
-    let listItemCart = getDataStorage(keyLocalStorageItemCart);
-    const listItemCartNow = listItemCart.filter(item => item.idSP !== id);
+    // Tìm cái số lượng (listItemCard) theo id   => Xét lại localStorage listItemCard
 
-    setListItemCart(listItemCartNow);
 
-    let element = event.target.closest(".item-cart");
+    // có id (listItemCard) => id tương ứng (listProduct) + số lượng => xét lại
+
+
+    const findItem = listItemCart.find((item) => item.idSP === id);
+
+    const listItemCartWithoutId = listItemCart.filter(item => item.idSP !== id);
+
+    setDataStorage(keyLocalStorageItemCart, listItemCartWithoutId);
+
+    const listProductCurrent = listProduct.map((item) => {
+        return {
+            ...item,
+            quantity: item.id?.toString() === id?.toString() ? item.quantity + findItem.quantityAdd : item.quantity
+        }
+    });
+
+    setDataStorage(keyLocalStorageListSP, listProductCurrent);
+
+
+    let element = event?.target.closest(".item-cart");
     element.remove();
+
     total()
 }
+
 
 // Lấy thông tin tỉnh, huyện xã để đổ ra giao diện
 function openModal() {

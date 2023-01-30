@@ -97,13 +97,27 @@ textarea {
 }
 
 /* Giỏ hàng */
-.cart {
+#cart, #cart-empty {
     max-width: 1000px;
     border: 1px solid #ddd;
     box-shadow:  2px 2px 4px #ddd;
     padding: 20px;
     margin: auto;
     font-size: 14px; 
+}
+
+#cart {
+    display: none;
+}
+
+#cart-empty .cart-empty__img {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+#cart-empty .cart-empty__img img {
+    margin: auto;
+    width: 80%;
 }
 
 /* Item cart */
@@ -125,7 +139,7 @@ textarea {
 }
 
 .item-cart .product-name {
-    flex: 3;
+    flex: 2;
 }
 
 .item-cart .product-name .image img {
@@ -163,7 +177,7 @@ textarea {
     font-size: 10px;
 }
 
-.item-cart .price, .totalMoney {
+.item-cart .price, .totalPrice {
     font-size: 14px;
 }
 
@@ -181,7 +195,7 @@ textarea {
     margin-top: 30px;
 }
 
-#totalMoney-all {
+#totalPrice-all {
     padding-bottom: 20px;
     display: flex;
     justify-content: end;
@@ -192,13 +206,13 @@ textarea {
     justify-content: space-between;
 }
 
-.support-buy__btn-back {
+.support-buy__btn-back, .cart-empty__btn-back {
     background-color: #fff;
     border: 2px solid #f37761;
     color: #f37761;
 }
 
-.support-buy__btn-back:hover {
+.support-buy__btn-back:hover, .cart-empty__btn-back:hover {
     border: 2px solid #ed300e;
     color: #ed300e;
 }

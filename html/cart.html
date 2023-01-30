@@ -33,7 +33,7 @@
         </ul>
     </nav>
     <!-- Hiển thị thông tin giỏ hàng -->
-    <section class="cart">
+    <section id="cart">
         <div id="cart-title">
             <div class="item-cart bold">
                 <div class="product-name bold">
@@ -43,22 +43,30 @@
                     Quantity
                 </div>
                 <div class="price bold">Subtotal</div>
-                <p class="totalMoney bold">Total</p>
+                <p class="totalPrice bold">Total</p>
                 <div class="action bold">
                     Clear Cart
                 </div>
             </div>
         </div>
         <div class="support-buy">
-            <div id="totalMoney-all">
+            <div id="totalPrice-all">
                 
             </div>
             <div class="support-buy__btn">
-                <button class="support-buy__btn-back"><i class="fa-solid fa-arrow-left"></i> Back to Shopping</button>
+                <button class="support-buy__btn-back" onclick="backToHome()"><i class="fa-solid fa-arrow-left"></i> Back to Shopping</button>
                 <button class="support-buy__btn-buy" onclick="openModal()">Buy</button>
             </div>
         </div>
 
+    </section>
+    <section id="cart-empty">
+        <div class="cart-empty__img">
+            <img src="../img/your-cart-is-empty.png">
+        </div>
+        <div class="cart-empty__support">
+            <button class="cart-empty__btn-back" onclick="backToHome()"><i class="fa-solid fa-arrow-left"></i> Back to Shopping</button>
+        </div>
     </section>
 
     <!-- Modal layout -->
@@ -151,6 +159,7 @@
     </div>
 
     <script src="../JavaScript/utils.js"></script>
+    <script src="../JavaScript/callAPI.js"></script>
     <script src="../JavaScript/cart.js"></script>
     <script src="../JavaScript/validate.js"></script>
     

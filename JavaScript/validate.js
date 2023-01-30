@@ -1,3 +1,7 @@
+// var keyLocalStorageListSP = "DANHSACHSP";
+
+// var keyLocalStorageItemCart = "DANHSACHITEMCART"
+
 document.addEventListener('DOMContentLoaded', function () {
     // Mong muốn của chúng ta
     Validator({
@@ -17,24 +21,32 @@ document.addEventListener('DOMContentLoaded', function () {
             Validator.isVillage('#village'),
         ],
         onSubmit: function (data) {
-
-            console.log(data);
-
             let province = document.querySelector(`#province option[value='${data.province}']`).innerText
             let district = document.querySelector(`#district option[value='${data.district}']`).innerText
             let ward = document.querySelector(`#ward option[value='${data.ward}']`).innerText
+
+            let totalPriceAll = 0;
+
+            listProductCart.forEach(product => {
+                totalPriceAll += product.price * product.soLuong;
+            })
+
             let payload = {
                 "fullname": `${data.surname} ${data.name}`,
                 "address": `${data.village}, ${ward}, ${district}, ${province}`,
-                "id": generateID(),
-                "datetime": format(new Date())
+                "code": generateCode(),
+                "dateTime": format(new Date()),
+                "message": `${data.message}`,
             }
 
-            console.log(payload)
-            // function setListCustomer(data) {
-            //     localStorage.setItem("DANHSACHKHACHHANG", JSON.stringify(data))
-            // }
-            // setListCustomer(data)
+            payload["listOrder"] = getListProductCart();
+            payload["totalPriceAll"] = totalPriceAll;
+            // lưu thông tin đơn hàng
+            handleCreateOrderInfos(payload);
+            // xóa danh sách Item giỏ hàng
+            removeDataStorage(keyLocalStorageItemCart)
+            // localStorage.removeItem(keyLocalStorageItemCart);
+            
         }
     });
 

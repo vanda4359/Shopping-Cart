@@ -1,93 +1,100 @@
 // Bài 1
-var listData = [
+let listData = [
     {
-        id: 1,
+        id: "1",
         name: "Iphone 12",
         price: 10000000,
-        quantity: 2000,
+        quantity: 2,
         image: "../img/Iphone 12.webp"
     },
     {
-        id: 2,
+        id: "2",
         name: "Iphone 12 Pro",
         price: 12000000,
-        quantity: 500,
+        quantity: 5,
         image: "../img/Iphone 12 Pro.webp"
     },
     {
-        id: 3,
+        id: "3",
         name: "Iphone 12 Promax",
         price: 13000000,
-        quantity: 50,
+        quantity: 5,
         image: "../img/Iphone 12 Promax.webp"
     },
     {
-        id: 4,
+        id: "4",
         name: "Iphone 13",
         price: 15000000,
-        quantity: 80,
+        quantity: 8,
         image: "../img/Iphone 13.webp"
     },
     {
-        id: 5,
+        id: "5",
         name: "Iphone 13 Pro",
         price: 17000000,
-        quantity: 80,
+        quantity: 8,
         image: "../img/Iphone 13 Pro.webp"
     },
     {
-        id: 6,
+        id: "6",
         name: "Iphone 13 Promax",
         price: 19000000,
-        quantity: 80,
+        quantity: 8,
         image: "../img/Iphone 13 Promax.webp"
     },
     {
-        id: 7,
+        id: "7",
         name: "Iphone 14",
         price: 24000000,
-        quantity: 60,
+        quantity: 6,
         image: "../img/Iphone 14.webp"
     },
     {
-        id: 8,
+        id: "8",
         name: "Iphone 14 Promax",
         price: 30000000,
-        quantity: 60,
+        quantity: 6,
         image: "../img/Iphone 14 Promax.webp"
     },
 ];
 
-var keyLocalStorageListSP = "DANHSACHSP";
+const keyLocalStorageListSP = "DANHSACHSP";
 
-var keyLocalStorageItemCart = "DANHSACHITEMCART"
+const keyLocalStorageItemCart = "DANHSACHITEMCART"
 
 // Bài 2
-setDataStorage(keyLocalStorageListSP, listData);
 
+const listProduct = getDataStorage(keyLocalStorageListSP);
+
+console.log("listProduct", listProduct);
+if (listProduct.length === 0) {
+    setDataStorage(keyLocalStorageListSP, listData) ;
+} 
 // Bài 3
-var getListData = getDataStorage(keyLocalStorageListSP);
 
 // Chuyển danh sách sản phẩm thành HTML
 unitUI();
 
 function unitUI() {
-    // let getListData = getDataStorage(keyLocalStorageListSP)
-    let newHTML = getListData.map(function (product) { 
+    // let listProduct = getDataStorage(keyLocalStorageListSP)
+    let newHTML = listProduct?.map(function (product) {
         return `<div class="item">
                 <div class="item-thumb">
                     <img src="${product.image}" alt="">
                 </div>
                 <h2 class="item-name">${product.name}</h2>
                 <div class="item-title">
-                    <div class="item-price">${product.price} đ</div>
+                    <div class="item-price">${product.price.toLocaleString('en-US')} đ</div>
                     <div class="item-quanlity">${product.quantity} cái </div>
                 </div>
-                <button  onclick="handleAddToCart(${product.id})" class="btn btn-add">Thêm vào giỏ hàng</button>
+                ${product.quantity > 0 
+                    ? `<button onclick="handleAddToCart(${product.id}, ${product.quantity})" class="btn btn-add">Thêm vào giỏ hàng</button>` 
+                    : `<button class="btn btn-add" disabled>Thêm vào giỏ hàng</button>`
+                }
             </div>`;
     })
     newHTML = newHTML.join("")
-    document.getElementById("items-id").innerHTML = newHTML;  
+    document.getElementById("items-id").innerHTML = newHTML;
 };
 
 // Bài 4
@@ -100,38 +107,36 @@ function addProduct(idSP, quantityAdd) {
 
     return itemCart;
 }
- 
+
 // Lưu trữ danh sách Item giỏ hàng
-// setDataStorage(keyLocalStorageItemCart, listItemCart);
 
-function setListItemCart(listItemCart) {
-    let jsonListItemCart = JSON.stringify(listItemCart);
+// function setListItemCart(listItemCart) {
+//     let jsonListItemCart = JSON.stringify(listItemCart);
 
-    localStorage.setItem(keyLocalStorageItemCart, jsonListItemCart)
-}
+//     localStorage.setItem(keyLocalStorageItemCart, jsonListItemCart)
+// }
 
-function handleAddToCart(idSP) {
-    alert("Bạn muốn thêm vào giỏ hàng" + idSP)
+// setDataStorage(keyLocalStorageItemCart, listItemCart); 
 
-    let listItemCart = getDataStorage(keyLocalStorageItemCart);
+// Lấy danh sách item giỏ hàng
 
-    let existInListItemCart = false;
-    for (let i = 0; i < listItemCart.length; i++) {
-        const itemCartNow = listItemCart[i];
+const listItemCart = getDataStorage(keyLocalStorageItemCart);
 
-        // nếu tồn tại thì tăng số lượng 
-        if (itemCartNow.idSP === idSP) {
-            listItemCart[i].quantityAdd++;
-            existInListItemCart = true;
-        }
+
+function handleAddToCart(id) {
+
+    const indexOfItemOfListCart = listItemCart.findIndex((item) => item.idSP.toString() === id.toString());
+    const indexOfItemListProduct = listProduct.findIndex((item) => item.id.toString() === id.toString());
+
+    if (indexOfItemOfListCart >= 0) {
+        listItemCart[indexOfItemOfListCart].quantityAdd++;
+    } else {
+        const itemCart = addProduct(id, 1);
+        listItemCart?.push(itemCart);
     }
-
-    // Nếu ko tồn tại thì thêm vào trong danh sách 
-    if (!existInListItemCart) {
-        const itemCart = addProduct(idSP, 1);
-        listItemCart.push(itemCart);
-    }
-
+    listProduct[indexOfItemListProduct].quantity -= 1;
     // Lưu trữ vào localStorage
-    setListItemCart(listItemCart);
+    setDataStorage(keyLocalStorageItemCart, listItemCart); 
+    setDataStorage(keyLocalStorageListSP, listProduct);
+    unitUI();
 }

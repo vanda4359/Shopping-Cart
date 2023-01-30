@@ -1,5 +1,5 @@
-function generateID() {
-    return Math.random().toString().substr(2, 10) + "_" + String(new Date().getTime());
+function generateCode() {
+    return Math.random().toString().substr(2, 5) + "_" + String(new Date().getTime()).substr(2, 5);
 }
 
 
@@ -21,9 +21,9 @@ function format(inputDate) {
     return `${date}/${month}/${year}`;
 }
 
-// Lấy dữ liệu ra
+// Lấy dữ liệu từ localStorage ra
 function getDataStorage(key="DANHSACHITEMCART"){
-    return localStorage.getItem(key) ? JSON.parse(localStorage.getItem(key)) : null;
+    return localStorage.getItem(key) ? JSON.parse(localStorage.getItem(key)) : [];
 }
 
 // Lưu dữ liệu vào localStorage
@@ -32,4 +32,14 @@ function setDataStorage(key, value){
         console.error("key empty!!!!")
     }
     localStorage.setItem(key, JSON.stringify(value))
+}
+
+// Xóa dữ liệu khỏi localStorage
+ function removeDataStorage(key) {
+    localStorage.removeItem(key)
+ }
+
+// Quay về trang mua hàng
+function backToHome() {
+    location.replace("http://127.0.0.1:5501/html/index.html")
 }
