@@ -14,9 +14,16 @@
 <body>
     <!-- Navbar -->
     <nav id="nav-bar">
-        <ul class="menu-nav">
+        <div class="menu-nav">
+            <a href="./index.html" class="menu-item-title"><img src="../img/Apple1.png" alt="Apple logo" /></a>
+            <a href="./index.html" class="menu-item-title">HOME</a>
+            <a href="#" class="menu-item-title">ABOUT</a>
+            <a href="./bills.html" class="menu-item-title">BILLS</a>
+            <a href="#" class="menu-item-title"><i class="fa-solid fa-cart-shopping"></i></a>
+        </div>
+        <!-- <ul class="menu-nav">
             <li class="menu-item">
-                <a href="#" class="menu-item-title"><img src="../img/Apple.png" alt="Apple logo" /></a>
+                <a href="./index.html" class="menu-item-title"><img src="../img/Apple1.png" alt="Apple logo" /></a>
             </li>
             <li class="menu-item">
                 <a href="./index.html" class="menu-item-title">HOME</a>
@@ -30,31 +37,24 @@
             <li class="menu-item">
                 <a href="#" class="menu-item-title"><i class="fa-solid fa-cart-shopping"></i></a>
             </li>
-        </ul>
+        </ul> -->
     </nav>
     <!-- Hiển thị thông tin giỏ hàng -->
     <section id="cart">
-        <div id="cart-title">
-            <div class="item-cart bold">
-                <div class="product-name bold">
-                    Product Name
-                </div>
-                <div class="quantity bold">
-                    Quantity
-                </div>
-                <div class="price bold">Subtotal</div>
-                <p class="totalPrice bold">Total</p>
-                <div class="action bold">
-                    Clear Cart
-                </div>
-            </div>
+        <div>
+            <table>
+                <thead id="cart-title">
+
+                </thead>
+            </table>
         </div>
         <div class="support-buy">
             <div id="totalPrice-all">
-                
+
             </div>
             <div class="support-buy__btn">
-                <button class="support-buy__btn-back" onclick="backToHome()"><i class="fa-solid fa-arrow-left"></i> Back to Shopping</button>
+                <button class="support-buy__btn-back" onclick="backToHome()"><i class="fa-solid fa-arrow-left"></i> Back
+                    to Shopping</button>
                 <button class="support-buy__btn-buy" onclick="openModal()">Buy</button>
             </div>
         </div>
@@ -65,7 +65,8 @@
             <img src="../img/your-cart-is-empty.png">
         </div>
         <div class="cart-empty__support">
-            <button class="cart-empty__btn-back" onclick="backToHome()"><i class="fa-solid fa-arrow-left"></i> Back to Shopping</button>
+            <button class="cart-empty__btn-back" onclick="backToHome()"><i class="fa-solid fa-arrow-left"></i> Back to
+                Shopping</button>
         </div>
     </section>
 
@@ -81,7 +82,7 @@
                     </div>
                 </header>
                 <div action="" class="modal__customer-container">
-                    <div class="modal__customer-container--title" >
+                    <div class="modal__customer-container--title">
                         <label for="fullName">Họ và tên:</label>
                     </div>
                     <div class="modal__customer-container--fullName">
@@ -102,14 +103,14 @@
                         <input name="email" type="email" class="form-control" placeholder="Email" id="email">
                         <span for="email" class="form-message"></span>
                     </div>
-                    
+
 
                     <div class="modal__customer-container--title">
                         <label for="phone">Số điện thoại:</label>
                     </div>
                     <div class="form-group">
                         <input name="phone" class="form-control" placeholder="Số điện thoại" id="phone">
-                        <span for="phone" class="form-message" ></span>
+                        <span for="phone" class="form-message"></span>
                     </div>
 
                     <div class="modal__customer-container--title">
@@ -144,11 +145,11 @@
                         <label for="message">Lời nhắn:</label>
                     </div>
                     <div class="form-group">
-                        
+
                         <textarea rows="3" name="message" type="text" class="form-control" id="message"></textarea>
-                        
+
                     </div>
-                    
+
                 </div>
                 <div class="modal__customer-action">
                     <button class="modal__customer-action--close" onclick="closeModal()">Hủy</button>
@@ -157,12 +158,12 @@
             </form>
         </div>
     </div>
-
+    
     <script src="../JavaScript/utils.js"></script>
-    <script src="../JavaScript/callAPI.js"></script>
+    <script src="../JavaScript/iife.js"></script>
     <script src="../JavaScript/cart.js"></script>
     <script src="../JavaScript/validate.js"></script>
-    
+
 </body>
 
 </html>

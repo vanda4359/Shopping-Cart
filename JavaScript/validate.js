@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
             Validator.isRequired('#ward'),
             Validator.isVillage('#village'),
         ],
-        onSubmit: function (data) {
+        onSubmit: async function (data) {
             let province = document.querySelector(`#province option[value='${data.province}']`).innerText
             let district = document.querySelector(`#district option[value='${data.district}']`).innerText
             let ward = document.querySelector(`#ward option[value='${data.ward}']`).innerText
@@ -42,11 +42,11 @@ document.addEventListener('DOMContentLoaded', function () {
             payload["listOrder"] = getListProductCart();
             payload["totalPriceAll"] = totalPriceAll;
             // lưu thông tin đơn hàng
-            handleCreateOrderInfos(payload);
+            await app.handleCreateOrderInfos(payload);
             // xóa danh sách Item giỏ hàng
-            removeDataStorage(keyLocalStorageItemCart)
-            // localStorage.removeItem(keyLocalStorageItemCart);
-            
+            removeDataStorage(keyLocalStorageItemCart);
+            closeModal();
+            removeListCart();
         }
     });
 

@@ -16,6 +16,10 @@ a {
     text-decoration: none;
 }
 
+table {
+    width: 100%;
+}
+
 img {
     width: 100%;
 }
@@ -61,22 +65,14 @@ button:hover {
     flex-direction: row;
 }
 
-.menu-item {
+.menu-item-title {
     padding: 16px 20px;
-
-}
-
-.menu-item a {
     color: var(--dark--color);
     font-size: 16px;
     line-height: 32px;
 }
 
-.menu-item:hover {
-    background-color: #ede5e5;
-}
-
-.menu-item:nth-last-child(4) {
+.menu-item-title:nth-last-child(4) {
     margin-left: auto;
 }
 
@@ -97,10 +93,9 @@ button:hover {
 /* Item bills */
 
 .item-bills {
-    display: flex;
     border-bottom: 1px solid #ddd;
     padding: 6px 0;
-    flex-direction: row;
+   
     align-items: center;
 }
 
@@ -131,4 +126,85 @@ button:hover {
 .support-buy__btn-back:hover {
     border: 2px solid #ed300e;
     color: #ed300e;
+}
+
+/* Modal detail */
+
+#modal {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: none;
+}
+
+.modal__overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal__body {
+    width: 80%;
+    background-color: #fff;
+    margin: auto;
+    border-radius: 5px;
+    position: relative;
+    z-index: 1;
+}
+
+.modal__order {
+    /* min-width: 100%; */
+    padding: 10px;
+}
+
+.modal__order-header {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.modal__order-header h3 {
+    font-size: 16px;
+}
+
+.modal__order-header--close:hover {
+    cursor: pointer;
+    color: #ed300e;
+}
+
+.modal__order-container-item {
+    padding: 6px 0;
+    border-bottom: 1px solid #ddd;
+    font-size: 12px;
+}
+
+.product-name {
+    display: flex;
+    align-items: center;
+}
+
+.modal__order-container-item .product-name .image img {
+    width: 50px;
+    height: 50px;
+    margin-right: 20px;
+}
+
+.modal__order-action {
+    font-size: 10px;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.modal__order-action--close {
+    background-color: rgb(137, 141, 141);
+    border: none;
+}
+
+.modal__order-action--close:hover {
+    cursor: pointer;
+    background-color: rgb(125, 148, 148);
 }

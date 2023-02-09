@@ -5,12 +5,6 @@
     font-family: Helvetica;
 }
 
-
-ul {
-    list-style: none;
-    padding: 0;
-}
-
 a {
     text-decoration: none;
     height: 100%;
@@ -38,6 +32,10 @@ input, select {
     border: 1px solid #ddd;
     border-radius: 5px;
     outline: none;
+}
+
+table {
+    width: 100%;
 }
 
 textarea {
@@ -73,22 +71,14 @@ textarea {
     flex-direction: row;
 }
 
-.menu-item {
+.menu-item-title {
     padding: 16px 20px;
-
-}
-
-.menu-item a {
     color: var(--dark--color);
     font-size: 16px;
     line-height: 32px;
 }
 
-.menu-item:hover {
-    background-color: #ede5e5;
-}
-
-.menu-item:nth-last-child(4) {
+.menu-item-title:nth-last-child(4) {
     margin-left: auto;
 }
 
@@ -129,17 +119,7 @@ textarea {
 
 .item-cart, .product-name, .quantity {
     display: flex;
-    flex-direction: row;
     align-items: center;
-}
-
-.item-cart .quantity, .price, .totalMoney, .action {
-    flex: 1;
-    text-align: center;
-}
-
-.item-cart .product-name {
-    flex: 2;
 }
 
 .item-cart .product-name .image img {
@@ -156,21 +136,30 @@ textarea {
     font-size: 10px;
 }
 
-.item-cart .quantity {
-    justify-content: center;
-}
-
 .item-cart .quantity .quantity-add {
     padding: 20px;
 }
 
 .item-cart .quantity .decrease-quantity, .increase-quantity {
     padding: 10px;
+    background-color: #c9c6c6;
+    border: none;
+}
+
+.item-cart .quantity .decrease-quantity:disabled, .increase-quantity:disabled {
+    padding: 10px;
+    background-color: #f2e5e5;
+    border: none;
+}
+
+.item-cart .quantity .decrease-quantity:disabled:hover, .increase-quantity:disabled:hover {
+    cursor: none;
+    background-color: #f2e5e5;
 }
 
 .item-cart .quantity .decrease-quantity:hover, .increase-quantity:hover {
     cursor: pointer;
-    background-color: #d8d8d8;
+    background-color: #b8aaaa;
 }
 
 .item-cart .quantity i {
@@ -186,6 +175,7 @@ textarea {
 }
 
 .item-cart .action i:hover {
+    cursor: pointer;
     color: rgb(175, 80, 46);
 }
 
@@ -235,7 +225,6 @@ textarea {
     right: 0;
     bottom: 0;
     left: 0;
-    /* display: flex; */
     display: none;
 }
 

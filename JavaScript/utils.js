@@ -22,22 +22,22 @@ function format(inputDate) {
 }
 
 // Lấy dữ liệu từ localStorage ra
-function getDataStorage(key="DANHSACHITEMCART"){
-    return localStorage.getItem(key) ? JSON.parse(localStorage.getItem(key)) : [];
-}
+// function getDataStorage(key="DANHSACHITEMCART"){
+//     return JSON.parse(localStorage.getItem(key));
+// }
 
 // Lưu dữ liệu vào localStorage
-function setDataStorage(key, value){
-    if(!value){
-        console.error("key empty!!!!")
-    }
-    localStorage.setItem(key, JSON.stringify(value))
-}
+// function setDataStorage(key, value){
+//     if(!value){
+//         console.error("key empty!!!!")
+//     }
+//     localStorage.setItem(key, JSON.stringify(value))
+// }
 
 // Xóa dữ liệu khỏi localStorage
- function removeDataStorage(key) {
+function removeDataStorage(key) {
     localStorage.removeItem(key)
- }
+}
 
 // Quay về trang mua hàng
 function backToHome() {

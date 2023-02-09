@@ -1,4 +1,4 @@
-// Bài 1
+
 let listData = [
     {
         id: "1",
@@ -45,12 +45,26 @@ let listData = [
     {
         id: "7",
         name: "Iphone 14",
-        price: 24000000,
+        price: 20000000,
         quantity: 6,
         image: "../img/Iphone 14.webp"
     },
     {
         id: "8",
+        name: "Iphone 14 Plus",
+        price: 22000000,
+        quantity: 6,
+        image: "../img/Iphone 14 Plus.webp"
+    },
+    {
+        id: "9",
+        name: "Iphone 14 Pro",
+        price: 26000000,
+        quantity: 5,
+        image: "../img/Iphone 14 Pro.webp"
+    },
+    {
+        id: "10",
         name: "Iphone 14 Promax",
         price: 30000000,
         quantity: 6,
@@ -60,17 +74,13 @@ let listData = [
 
 const keyLocalStorageListSP = "DANHSACHSP";
 
-const keyLocalStorageItemCart = "DANHSACHITEMCART"
+const keyLocalStorageItemCart = "DANHSACHITEMCART";
 
-// Bài 2
+const listProduct = app.getData(keyLocalStorageListSP) || [];
 
-const listProduct = getDataStorage(keyLocalStorageListSP);
-
-console.log("listProduct", listProduct);
-if (listProduct.length === 0) {
-    setDataStorage(keyLocalStorageListSP, listData) ;
+if (listProduct?.length === 0) {
+    app.saveData(keyLocalStorageListSP, listData) ;
 } 
-// Bài 3
 
 // Chuyển danh sách sản phẩm thành HTML
 unitUI();
@@ -97,8 +107,6 @@ function unitUI() {
     document.getElementById("items-id").innerHTML = newHTML;
 };
 
-// Bài 4
-
 // Tạo đối tượng Item giỏ hàng
 function addProduct(idSP, quantityAdd) {
     let itemCart = {};
@@ -108,19 +116,10 @@ function addProduct(idSP, quantityAdd) {
     return itemCart;
 }
 
-// Lưu trữ danh sách Item giỏ hàng
-
-// function setListItemCart(listItemCart) {
-//     let jsonListItemCart = JSON.stringify(listItemCart);
-
-//     localStorage.setItem(keyLocalStorageItemCart, jsonListItemCart)
-// }
-
-// setDataStorage(keyLocalStorageItemCart, listItemCart); 
 
 // Lấy danh sách item giỏ hàng
 
-const listItemCart = getDataStorage(keyLocalStorageItemCart);
+const listItemCart = app.getData(keyLocalStorageItemCart) || [];
 
 
 function handleAddToCart(id) {
@@ -136,7 +135,7 @@ function handleAddToCart(id) {
     }
     listProduct[indexOfItemListProduct].quantity -= 1;
     // Lưu trữ vào localStorage
-    setDataStorage(keyLocalStorageItemCart, listItemCart); 
-    setDataStorage(keyLocalStorageListSP, listProduct);
+    app.saveData(keyLocalStorageItemCart, listItemCart); 
+    app.saveData(keyLocalStorageListSP, listProduct);
     unitUI();
 }
