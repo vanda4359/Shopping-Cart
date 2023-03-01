@@ -5,12 +5,13 @@ let keyLocalStorageListSP = "DANHSACHSP";
 let keyLocalStorageItemCart = "DANHSACHITEMCART"
 
 let listItemCart = app.getData(keyLocalStorageItemCart) || [];
-let listProduct = app.getData(keyLocalStorageListSP) ;
+let listProduct = app.getData(keyLocalStorageListSP);
 
 testCart();
 
 // kiểm tra giỏ hàng
 function testCart() {
+    const listItemCart = app.getData(keyLocalStorageItemCart) || [];
 
     if (listItemCart.length > 0) {
         document.getElementById('cart').style.display = "block";
@@ -21,15 +22,15 @@ function testCart() {
     }
 }
 
-function removeListCart(){
+function removeListCart() {
     document.getElementById('cart').style.display = "none";
     document.getElementById('cart-empty').style.display = "block";
 }
 
-
 // Tạo ra list sản phẩm giỏ hàng
 function getListProductCart() {
-
+    const listItemCart = app.getData(keyLocalStorageItemCart);
+    // console.log(1111222, abc);
     let listProductCart = listItemCart?.map(item => {
         const findItem = listProduct.find(e => e.id?.toString() === item.idSP?.toString());
         return {
@@ -41,9 +42,12 @@ function getListProductCart() {
 }
 
 let listProductCart = getListProductCart();
+
 initUI();
 function initUI() {
-    let newHTMLCart = 
+    const listProductCart = getListProductCart();
+
+    let newHTMLCart =
         `<tr class="item-cart bold">
             <th class="col-sm-4 product-name bold">
                 Product Name
@@ -56,7 +60,7 @@ function initUI() {
             <th class="col-sm-1 action bold">
                 Clear Cart
             </th>
-        </tr>` + 
+        </tr>` +
         listProductCart.map(function (product) {
             let totalProduct = product.price * product.soLuong;
             return `<tr class="item-cart">
@@ -71,14 +75,14 @@ function initUI() {
                         </td>
                         <td class="col-sm-3 quantity">
                             ${product.soLuong > 1
-                            ? `<button class="decrease-quantity" onclick="handleDecrease(event, ${product.id})" ><i class="fa-solid fa-minus"></i></button>`
-                            : `<button class="decrease-quantity" disabled ><i class="fa-solid fa-minus"></i></button>`
-                        }
+                    ? `<button class="decrease-quantity" onclick="handleDecrease(event, ${product.id})" ><i class="fa-solid fa-minus"></i></button>`
+                    : `<button class="decrease-quantity" disabled ><i class="fa-solid fa-minus"></i></button>`
+                }
                             <div class="quantity-add">${product.soLuong}</div>
                             ${product.quantity > 0
-                            ? `<button class="increase-quantity" onclick="handleIncrease(event, ${product.id})"><i class="fa-solid fa-plus"></i></button>`
-                            : `<button class="increase-quantity" disabled><i class="fa-solid fa-plus"></i></button>`
-                        }
+                    ? `<button class="increase-quantity" onclick="handleIncrease(event, ${product.id})"><i class="fa-solid fa-plus"></i></button>`
+                    : `<button class="increase-quantity" disabled><i class="fa-solid fa-plus"></i></button>`
+                }
                             
                         </td>
                         <td class="col-sm-2 price"> ${product.price.toLocaleString('en-US')} đ</td>
@@ -88,12 +92,16 @@ function initUI() {
                         </td>
                     </tr>`;
         })?.join("")
-        document.getElementById("cart-title").innerHTML = newHTMLCart;
+    document.getElementById("cart-title").innerHTML = newHTMLCart;
     total();
 }
 
 // Tổng tiền 
 function total() {
+    const listProductCart = getListProductCart();
+
+    console.log('listProductCart1', listProductCart);
+
     let totalPriceAll = 0;
 
     listProductCart.forEach(product => {
@@ -104,6 +112,8 @@ function total() {
 
 // giảm số lượng đặt hàng của từng sản phẩm
 function handleDecrease(event, id) {
+    let listProductCart = getListProductCart();
+    let listItemCart = app.getData(keyLocalStorageItemCart);
 
     let elementQuantityAdd = event.target.closest(".item-cart").querySelector(".quantity-add");
 
@@ -147,7 +157,7 @@ function handleDecrease(event, id) {
             if (quantityCart === 1 || quantity === 1) {
                 initUI();
             }
-        
+
             break;
         }
     }
@@ -156,6 +166,8 @@ function handleDecrease(event, id) {
 
 // Tăng số lượng đặt hàng của từng sản phẩm
 function handleIncrease(event, id) {
+    let listProductCart = getListProductCart();
+    let listItemCart = app.getData(keyLocalStorageItemCart);
 
     let elementQuantityAdd = event.target.closest(".item-cart").querySelector(".quantity-add");
 
@@ -207,30 +219,37 @@ function handleIncrease(event, id) {
 
 // Xóa sản phẩm của giỏ hàng
 function deleteItemCart(event, id) {
+    const listItemCart = app.getData(keyLocalStorageItemCart);
+    const listProduct = app.getData(keyLocalStorageListSP);
+
     const confirmDelete = confirm('Bạn có chắc chắn muốn xóa:' + id);
 
-    if(confirmDelete == true ) {
-        console.log(11111);
+    if (confirmDelete == true) {
+
         const findItem = listItemCart.find((item) => item.idSP === id);
-    
+
         const listItemCartWithoutId = listItemCart.filter(item => item.idSP !== id);
-    
+
         app.saveData(keyLocalStorageItemCart, listItemCartWithoutId);
-    
+
         const listProductCurrent = listProduct.map((item) => {
             return {
                 ...item,
-                quantity: item.id?.toString() === id?.toString() ? item.quantity + findItem.quantityAdd : item.quantity
+                quantity: item.id.toString() === id.toString() ? item.quantity + findItem.quantityAdd : item.quantity
             }
         });
-    
+
         app.saveData(keyLocalStorageListSP, listProductCurrent);
-    
-    
+
         let element = event?.target.closest(".item-cart");
+        console.log("element", element);
         element.remove();
-    
-        total()
+
+        getListProductCart();
+   
+        total();
+        testCart()
+
     }
 
 }
